@@ -3,12 +3,7 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export default function todoItem({ item, deleteItem }) {
   return (
-    <TouchableOpacity
-      style={styles.item}
-      onPress={() => {
-        deleteItem(item.key);
-      }}
-    >
+    <TouchableOpacity style={styles.item} onPress={() => deleteItem(item.key)}>
       <Text>{item.text}</Text>
     </TouchableOpacity>
   );
