@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
+  Button,
   FlatList,
   Alert,
   TouchableWithoutFeedback,
@@ -14,6 +14,7 @@ import AddTodo from "./components/addTodo";
 
 export default function App() {
   const [todos, setTodos] = useState([]);
+  const [isAddMode, setIsAddMode] = useState(false);
 
   const deleteItem = (key) => {
     setTodos((PrevTodos) => {
@@ -23,17 +24,20 @@ export default function App() {
 
   const addTodoHandler = (val) => {
     if (val.length > 3) {
-      setTodos((prevTodos) => {
-        return [
-          { text: val, key: Math.floor(Math.random() * 2) },
-          ...prevTodos,
-        ];
-      });
+      setTodos((prevTodos) => [
+        { text: val, key: Math.floor(Math.random() * 2) },
+        ...prevTodos,
+      ]);
+      setIsAddMode(false);
     } else {
       Alert.alert("OOPS", "todos must be over 3 chars long", [
         { text: "Understood", onPress: () => console.log("alert closed") },
       ]);
     }
+  };
+
+  const cancelAddTodo = () => {
+    setIsAddMode(false);
   };
 
   return (
@@ -44,7 +48,12 @@ export default function App() {
     >
       <View style={styles.container}>
         <Header />
-        <AddTodo addTodoHandler={addTodoHandler} />
+        <Button title="Add New ToDo" onPress={() => setIsAddMode(true)} />
+        <AddTodo
+          visible={isAddMode}
+          cancelAddTodo={cancelAddTodo}
+          addTodoHandler={addTodoHandler}
+        />
         <View style={styles.content}>
           <View style={styles.list}>
             <FlatList
